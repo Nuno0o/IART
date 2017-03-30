@@ -28,6 +28,8 @@
 //      a  b  c  d  e  f  g  h
 //
 // Coordinates
+
+
 class BitBoard {
 public:
 	U64 whiteSoldiers;
@@ -41,9 +43,13 @@ public:
 	U64 blackCaptains;
 	U64 blackLieutenants;
 	U64 blackGeneral;
+
+	U64 whitePieces;
+	U64 blackPieces;
 public:
 	//Initialize board
 	BitBoard();
 	//Get possible moves for a certain piece
 	U64 getMoveSet(unsigned int x, unsigned int y);
+	//
 };
