@@ -5,5 +5,5 @@
 int main() {
 	BitBoard board;
 
-	std::cout << board.blackGeneral;
+	
 }

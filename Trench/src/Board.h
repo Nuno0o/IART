@@ -1,13 +1,4 @@
 #pragma once
-
-typedef unsigned long long U64;
-
-#define C64(constantU64) constantU64##ULL
-
-const U64 universe = 0xffffffffffffffffULL;
-const U64 empty = 0x0ULL;
-
-
 // A Bitboard represents game state.
 //
 // We use a little-endian mapping of bits to rank-and-file coordinates. For
