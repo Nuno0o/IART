@@ -4,6 +4,9 @@ typedef unsigned long long U64;
 
 #define C64(constantU64) constantU64##ULL
 
+const U64 universe = 0xffffffffffffffffULL;
+const U64 empty = 0x0ULL;
+
 
 // A Bitboard represents game state.
 //
@@ -35,7 +38,7 @@ typedef unsigned long long U64;
 //
 // Coordinates
 class BitBoard {
-private:
+public:
 	U64 whiteSoldiers;
 	U64 whiteSargents;
 	U64 whiteCaptains;
@@ -50,4 +53,6 @@ private:
 public:
 	//Initialize board
 	BitBoard();
+	//Get possible moves for a certain piece
+	U64 getMoveSet(unsigned int x, unsigned int y);
 };
