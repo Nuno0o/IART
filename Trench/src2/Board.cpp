@@ -16,17 +16,6 @@ Board::Board(){
 Board::vector<Move> allMoves(Team team){
 	//List of all moves for the team
 	vector<Move> ret;
-	//Get moves for all pieces in the board
-	for(Coord i = 0;i < this->board.size();i++){
-		for(Coord j = 0;j < this->board.size();j++){
-			vector<Move> moves = pieceMoves(team,j,i);
-			ret.insert(ret.end(),moves.begin(),moves.end());
-		}
-	}
-	return ret;
-}
-Board::vector<Move> pieceMoves(Team team,Coord x,Coord y){
-	vector<Move> ret;
 	//Team for bitwise cmp
 	Piece pteam;
 	switch(team)
@@ -40,6 +29,17 @@ Board::vector<Move> pieceMoves(Team team,Coord x,Coord y){
 		default:
 			break;
 	}
+	//Get moves for all pieces in the board
+	for(Coord i = 0;i < this->board.size();i++){
+		for(Coord j = 0;j < this->board.size();j++){
+			vector<Move> moves = pieceMoves(pteam,j,i);
+			ret.insert(ret.end(),moves.begin(),moves.end());
+		}
+	}
+	return ret;
+}
+Board::vector<Move> pieceMoves(Piece pteam,Coord x,Coord y){
+	vector<Move> ret;
 	//Get piece at coords
 	Piece p = Board[y][x];
 	//Check if the piece's team is the same as the desired
@@ -66,10 +66,7 @@ Board::vector<Move> pieceMoves(Team team,Coord x,Coord y){
 	{
 		
 	}
-	
-	
-	
-	
+	return ret;
 }
 
 Move::Move(Coord sx,Coord sy,Coord dx,Coord dy){

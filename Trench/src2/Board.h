@@ -12,7 +12,7 @@ private:
 public:
 	Board();
 	vector<Move> allMoves(Team team);
-	vector<Move> pieceMoves(Team team,Coord x,Coord y);
+	vector<Move> pieceMoves(Piece pteam,Coord x,Coord y);
 };
 
 class Move {
