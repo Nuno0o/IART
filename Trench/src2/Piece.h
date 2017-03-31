@@ -1,6 +1,6 @@
 #pragma once
 
-typedef char Piece
+typedef unsigned char Piece
 
 //Piece: 1 byte
 //Empty    Team            Rank

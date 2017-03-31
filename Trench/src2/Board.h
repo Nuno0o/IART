@@ -2,7 +2,8 @@
 
 #include<vector>
 
-#include"Defines.h"
+#include "Defines.h"
+#include "Piece.h"
 
 class Board {
 private:
@@ -10,4 +11,26 @@ private:
 	
 public:
 	Board();
+	vector<Move> allMoves(Team team);
+	vector<Move> pieceMoves(Team team,Coord x,Coord y);
 };
+
+class Move {
+private:
+	Coord startX;
+	Coord startY;
+	Coord destX;
+	Coord destY;
+public:
+	//Constructor
+	Move(Coord sx, Coord sy, Coord dx, Coord dy);
+	
+	//Get start x
+	Coord getSX();
+	//Get start y
+	Coord getSY();
+	//Get destiny x
+	Coord getDX();
+	//Get destiny y
+	Coord getDY();
+}
