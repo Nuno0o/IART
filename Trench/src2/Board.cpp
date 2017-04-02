@@ -40,7 +40,7 @@ std::vector<Move> Board::allMoves(Team team){
 	return ret;
 }
 
-Piece Board::getPiece(Coord x, Coord y) {
+Piece Board::getPiece(Coord y, Coord x) {
 	return this->board[y][x];
 }
 std::vector<Move> Board::pieceMoves(Piece pteam,Coord x,Coord y){
