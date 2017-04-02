@@ -1,7 +1,5 @@
 #pragma once
 
-typedef unsigned char Piece
-
 //Piece: 1 byte
 //Empty    Team            Rank
 //  E    T2   T1   R5 |  R4   R3   R2   R1
@@ -23,3 +21,5 @@ typedef unsigned char Piece
 #define LIT   0x08
 #define GEN   0x10
 #define EMPTY 0x80
+
+typedef unsigned char Piece;

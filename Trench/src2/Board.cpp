@@ -1,4 +1,5 @@
 #include "Board.h"
+
 Board::Board(){
 	this->board =
 	{
@@ -10,12 +11,12 @@ Board::Board(){
 		{WHITE|CPT    ,WHITE|SRG    ,WHITE|SLD    ,WHITE|SLD    ,EMPTY        ,EMPTY        ,EMPTY        ,EMPTY        },
 		{WHITE|LIT    ,WHITE|CPT    ,WHITE|SRG    ,WHITE|SLD    ,EMPTY        ,EMPTY        ,EMPTY        ,EMPTY        },
 		{WHITE|GEN    ,WHITE|LIT    ,WHITE|CPT    ,WHITE|SRG    ,EMPTY        ,EMPTY        ,EMPTY        ,EMPTY        }
-	}
+	};
 }
 
-Board::vector<Move> allMoves(Team team){
+std::vector<Move> Board::allMoves(Team team){
 	//List of all moves for the team
-	vector<Move> ret;
+	std::vector<Move> ret;
 	//Team for bitwise cmp
 	Piece pteam;
 	switch(team)
@@ -32,16 +33,20 @@ Board::vector<Move> allMoves(Team team){
 	//Get moves for all pieces in the board
 	for(Coord i = 0;i < this->board.size();i++){
 		for(Coord j = 0;j < this->board.size();j++){
-			vector<Move> moves = pieceMoves(pteam,j,i);
+			std::vector<Move> moves = pieceMoves(pteam,j,i);
 			ret.insert(ret.end(),moves.begin(),moves.end());
 		}
 	}
 	return ret;
 }
-Board::vector<Move> pieceMoves(Piece pteam,Coord x,Coord y){
-	vector<Move> ret;
+
+Piece Board::getPiece(Coord x, Coord y) {
+	return this->board[y][x];
+}
+std::vector<Move> Board::pieceMoves(Piece pteam,Coord x,Coord y){
+	std::vector<Move> ret;
 	//Get piece at coords
-	Piece p = Board[y][x];
+	Piece p = board[y][x];
 	//Check if the piece's team is the same as the desired
 	if(p & pteam == NULL){
 		return ret;
@@ -76,16 +81,16 @@ Move::Move(Coord sx,Coord sy,Coord dx,Coord dy){
 	this->destY = dy;
 }
 
-Move::getSX(){
+Coord Move::getSX(){
 	return this->startX;
 }
-Move::getSY(){
+Coord Move::getSY(){
 	return this->startY;
 }
 
-Move::getDX(){
+Coord Move::getDX(){
 	return this->destX;
 }
-Move::getDY(){
+Coord Move::getDY(){
 	return this->destY;
 }

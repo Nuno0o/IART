@@ -1,7 +1,7 @@
 #pragma once
 //Coordinate
-typedef unsigned char Coord
+typedef unsigned char Coord;
 //Team
-enum Team : char{
-	White,Black
-}:
+enum Team : char {
+	White, Black
+};

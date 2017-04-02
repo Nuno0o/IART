@@ -5,16 +5,6 @@
 #include "Defines.h"
 #include "Piece.h"
 
-class Board {
-private:
-	std::vector<std::vector<Piece>> board;
-	
-public:
-	Board();
-	vector<Move> allMoves(Team team);
-	vector<Move> pieceMoves(Piece pteam,Coord x,Coord y);
-};
-
 class Move {
 private:
 	Coord startX;
@@ -24,7 +14,7 @@ private:
 public:
 	//Constructor
 	Move(Coord sx, Coord sy, Coord dx, Coord dy);
-	
+
 	//Get start x
 	Coord getSX();
 	//Get start y
@@ -33,4 +23,15 @@ public:
 	Coord getDX();
 	//Get destiny y
 	Coord getDY();
-}
+};
+
+class Board {
+private:
+	std::vector<std::vector<Piece>> board;
+	
+public:
+	Board();
+	std::vector<Move> allMoves(Team team);
+	std::vector<Move> pieceMoves(Piece pteam,Coord x,Coord y);
+	Piece getPiece(Coord x, Coord y);
+};
