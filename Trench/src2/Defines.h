@@ -20,7 +20,12 @@
 #define COLOR_WHITE			15
 
 //Coordinate
-typedef unsigned char Coord;
+typedef char MCoord;
+//Move angle
+//1 -> (0,1) , 2 -> (1,1) , 3 -> (1,0)...(continues clockwise)
+typedef unsigned char MAngle;
+//Move length
+typedef unsigned char MLength;
 //Team
 enum Team : char {
 	White, Black

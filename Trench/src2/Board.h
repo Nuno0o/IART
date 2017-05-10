@@ -7,22 +7,27 @@
 
 class Move {
 private:
-	Coord startX;
-	Coord startY;
-	Coord destX;
-	Coord destY;
+	MCoord startX;
+	MCoord startY;
+	MCoord destX;
+	MCoord destY;
 public:
 	//Constructor
-	Move(Coord sx, Coord sy, Coord dx, Coord dy);
+	Move(MCoord sx, MCoord sy, MCoord dx, MCoord dy);
 
 	//Get start x
-	Coord getSX();
+	MCoord getSX();
 	//Get start y
-	Coord getSY();
+	MCoord getSY();
 	//Get destiny x
-	Coord getDX();
+	MCoord getDX();
 	//Get destiny y
-	Coord getDY();
+	MCoord getDY();
+
+	static bool legalAngle(MAngle angle, Piece p);
+	static MCoord getAngleX(MAngle angle);
+	static MCoord getAngleY(MAngle angle);
+	static MLength getMaxLength(Piece p);
 };
 
 class Board {
@@ -31,7 +36,8 @@ private:
 	
 public:
 	Board();
-	std::vector<Move> allMoves(Team team);
-	std::vector<Move> pieceMoves(Piece pteam,Coord x,Coord y);
-	Piece getPiece(Coord x, Coord y);
+	std::vector<Move> getAllMoves(Team team);
+	std::vector<Move> getPieceMoves(MCoord x,MCoord y);
+	bool checkPieceTeam(Piece pteam,MCoord x,MCoord y);
+	Piece getPiece(MCoord x, MCoord y);
 };
