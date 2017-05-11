@@ -47,10 +47,10 @@ bool Board::checkPieceTeam(Piece pteam, MCoord x, MCoord y) {
 	//Get piece at coords
 	Piece p = board[y][x];
 	//Check if the piece's team is the same as the desired
-	if (p & pteam == NULL) {
-		return false;
+	if (p & pteam) {
+		return true;
 	}
-	else return true;
+	else return false;
 }
 
 std::vector<Move> Board::getPieceMoves(MCoord x, MCoord y) {
