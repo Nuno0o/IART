@@ -30,5 +30,5 @@ typedef unsigned char MLength;
 typedef int SScore;
 //Team
 enum Team : char {
-	White, Black
+	White = 1, Black = -1
 };

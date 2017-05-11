@@ -134,7 +134,7 @@ Board Board::movePiece(Move move) {
 	return b;
 }
 
-SScore Board::getScore() {
+SScore Board::calculateScore() {
 	return 0;
 }
 

@@ -43,5 +43,5 @@ public:
 
 	Board movePiece(Move move);
 
-	SScore getScore();
+	SScore calculateScore();
 };
