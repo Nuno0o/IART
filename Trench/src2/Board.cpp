@@ -1,5 +1,5 @@
 #include "Board.h"
-
+#include <iostream>
 Board::Board() {
 	this->board =
 	{
@@ -66,11 +66,11 @@ std::vector<Move> Board::getPieceMoves(MCoord x, MCoord y) {
 
 	
 	for (MAngle angles = 0; angles < 8; angles++) {
-		for (MLength length = 0; length < maxLength; length++) {
+		for (MLength length = 1; length <= maxLength; length++) {
 			if (Move::legalAngle(angles, p)) {
 				//Get destiny coords
-				MCoord ydest = y + Move::getAngleY(angles);
-				MCoord xdest = x + Move::getAngleX(angles);
+				MCoord ydest = y + Move::getAngleY(angles)*length;
+				MCoord xdest = x + Move::getAngleX(angles)*length;
 				//Check if outside boundaries
 				if (ydest < 0 || xdest < 0 || ydest > 7 || xdest > 7) {
 					continue;
@@ -82,13 +82,13 @@ std::vector<Move> Board::getPieceMoves(MCoord x, MCoord y) {
 					Move move = Move(x, y, xdest, ydest);
 					ret.push_back(move);
 					continue;
-				}else
+				}
 				//If destiny is friend
-				if (p & BLACK && p2 & BLACK || p & WHITE && p2 & WHITE) {
+				else if (p & BLACK && p2 & BLACK || p & WHITE && p2 & WHITE) {
 					break;
-				}else
+				}
 				//If destiny is enemy
-				{
+				else{
 					//If both target and origin are trench
 					if (atTrench && xdest == ydest) {
 						break;
@@ -105,12 +105,14 @@ std::vector<Move> Board::getPieceMoves(MCoord x, MCoord y) {
 						break;
 					}
 					else if (!atTrench && xdest == ydest && atFriendlyTerritory) {
-						break;
-					}
-					else if (!atTrench && xdest == ydest && !atFriendlyTerritory) {
-						Move move = Move(x, y, xdest, ydest);
-						ret.push_back(move);
-						break;
+						if (atFriendlyTerritory) {
+							break;
+						}
+						else {
+							Move move = Move(x, y, xdest, ydest);
+							ret.push_back(move);
+							break;
+						}
 					}
 					else if (!atTrench && xdest != ydest) {
 						Move move = Move(x, y, xdest, ydest);
