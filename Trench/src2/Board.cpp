@@ -126,6 +126,14 @@ std::vector<Move> Board::getPieceMoves(MCoord x, MCoord y) {
 	return ret;
 }
 
+Board Board::movePiece(Move move) {
+	Board b = Board();
+	b.board = this->board;
+	b.board[move.getDY()][move.getDX()] = b.board[move.getSY()][move.getSX()];
+	b.board[move.getSY()][move.getSX()] = EMPTY;
+	return b;
+}
+
 ////////////////////////////// MOVE ///////////////////////////////
 
 Move::Move(MCoord sx, MCoord sy, MCoord dx, MCoord dy) {

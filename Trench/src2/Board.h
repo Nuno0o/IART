@@ -40,4 +40,6 @@ public:
 	std::vector<Move> getPieceMoves(MCoord x,MCoord y);
 	bool checkPieceTeam(Piece pteam,MCoord x,MCoord y);
 	Piece getPiece(MCoord x, MCoord y);
+
+	Board movePiece(Move move);
 };
