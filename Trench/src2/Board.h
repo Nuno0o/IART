@@ -42,4 +42,6 @@ public:
 	Piece getPiece(MCoord x, MCoord y);
 
 	Board movePiece(Move move);
+
+	SScore getScore();
 };

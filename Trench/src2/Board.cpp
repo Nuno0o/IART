@@ -134,6 +134,10 @@ Board Board::movePiece(Move move) {
 	return b;
 }
 
+SScore Board::getScore() {
+	return 0;
+}
+
 ////////////////////////////// MOVE ///////////////////////////////
 
 Move::Move(MCoord sx, MCoord sy, MCoord dx, MCoord dy) {

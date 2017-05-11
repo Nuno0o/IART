@@ -26,6 +26,8 @@ typedef char MCoord;
 typedef unsigned char MAngle;
 //Move length
 typedef unsigned char MLength;
+//Minimax score(state score)
+typedef int SScore;
 //Team
 enum Team : char {
 	White, Black
