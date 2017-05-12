@@ -13,6 +13,8 @@
 //       Li      0    1    0    0    0
 //       Gen     1    0    0    0    0
 
+typedef unsigned char Piece;
+
 #define WHITE 0x20
 #define BLACK 0x40
 #define SLD   0x01
@@ -21,5 +23,3 @@
 #define LIT   0x08
 #define GEN   0x10
 #define EMPTY 0x80
-
-typedef unsigned char Piece;

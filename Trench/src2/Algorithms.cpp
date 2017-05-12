@@ -12,10 +12,10 @@ Move* Algorithms::negamaxWithoutABP(Board * b, int depth, Team team) {
 	}
 }
 
-SScore negamaxWithoutABPAux(Board * b, int depth, Team team) {
+SHeur negamaxWithoutABPAux(Board * b, int depth, Team team) {
 	//If at bottom of search tree
-	if (depth == 0 /* || game ended */) {
-		return team*b->calculateScore();
+	if (depth == 0 || b->getGameEnded()) {
+		return team*b->calculateScore(team);
 	}
 	//Check which is the next team
 	Team nextTeam;
@@ -24,11 +24,11 @@ SScore negamaxWithoutABPAux(Board * b, int depth, Team team) {
 	}
 	else nextTeam = Black;
 	//Best choice
-	SScore best = -100000000000;
+	SHeur best = -100000000000;
 	//Try all moves
 	std::vector<Move> moves = b->getAllMoves(team);
 	for (int i = 0; i < moves.size(); i++) {
-		SScore next = negamaxWithoutABPAux(&(b->movePiece(moves[i])),depth-1,nextTeam);
+		SHeur next = negamaxWithoutABPAux(&(b->movePiece(moves[i])),depth-1,nextTeam);
 		best = std::fmax(best, next);
 	}
 	return best;

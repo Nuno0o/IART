@@ -38,10 +38,15 @@ public:
 	Board();
 	std::vector<Move> getAllMoves(Team team);
 	std::vector<Move> getPieceMoves(MCoord x,MCoord y);
-	bool checkPieceTeam(Piece pteam,MCoord x,MCoord y);
+	
 	Piece getPiece(MCoord x, MCoord y);
+	static int getPieceValue(Piece p);
+	
+	int getTeamScore(Team team);
+	bool getGameEnded();
+	
 
 	Board movePiece(Move move);
 
-	SScore calculateScore(Team team);
+	SHeur calculateScore(Team team);
 };

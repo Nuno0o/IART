@@ -1,7 +1,7 @@
 #include "Board.h"
 #include <iostream>
 Board::Board() {
-	this->board =
+	board =
 	{
 		{EMPTY        ,EMPTY        ,EMPTY        ,EMPTY        ,BLACK | SRG    ,BLACK | CPT    ,BLACK | LIT    ,BLACK | GEN    },
 		{EMPTY        ,EMPTY        ,EMPTY        ,EMPTY        ,BLACK | SLD    ,BLACK | SRG    ,BLACK | CPT    ,BLACK | LIT    },
@@ -33,7 +33,7 @@ std::vector<Move> Board::getAllMoves(Team team) {
 	//Get moves for all pieces in the board
 	for (MCoord i = 0; i < this->board.size(); i++) {
 		for (MCoord j = 0; j < this->board.size(); j++) {
-			if (checkPieceTeam(pteam, j, i)) {
+			if (pteam & board[i][j]) {
 				std::vector<Move> moves = getPieceMoves(j, i);
 				ret.insert(ret.end(), moves.begin(), moves.end());
 			}
@@ -43,15 +43,6 @@ std::vector<Move> Board::getAllMoves(Team team) {
 }
 
 
-bool Board::checkPieceTeam(Piece pteam, MCoord x, MCoord y) {
-	//Get piece at coords
-	Piece p = board[y][x];
-	//Check if the piece's team is the same as the desired
-	if (p & pteam) {
-		return true;
-	}
-	else return false;
-}
 
 std::vector<Move> Board::getPieceMoves(MCoord x, MCoord y) {
 	std::vector<Move> ret;
@@ -126,6 +117,28 @@ std::vector<Move> Board::getPieceMoves(MCoord x, MCoord y) {
 	return ret;
 }
 
+int Board::getTeamScore(Team team) {
+	Piece enemyTeam;
+	if (team == Black) {
+		enemyTeam = WHITE;
+	}
+	else enemyTeam = BLACK;
+
+	int total = 36;
+	for (int i = 0; i < board.size(); i++) {
+		for (int j = 0; j < board.size(); j++) {
+			if (board[i][j] & enemyTeam) {
+				total -= getPieceValue(board[i][j]);
+			}
+		}
+	}
+	return total;
+}
+
+bool Board::getGameEnded() {
+	return getTeamScore(Black) == 36 || getTeamScore(White) == 36;
+}
+
 Board Board::movePiece(Move move) {
 	Board b = Board();
 	b.board = this->board;
@@ -134,7 +147,7 @@ Board Board::movePiece(Move move) {
 	return b;
 }
 
-SScore Board::calculateScore(Team team) {
+SHeur Board::calculateScore(Team team) {
 	return 0;
 }
 
@@ -165,6 +178,16 @@ MCoord Move::getDY() {
 
 Piece Board::getPiece(MCoord y, MCoord x) {
 	return this->board[y][x];
+}
+
+int Board::getPieceValue(Piece p) {
+	Piece paux = p;
+	for (int i = 1; i < 6; paux >>= 1,i++) {
+		if (paux & 1) {
+			return i;
+		}
+	}
+	return -1;
 }
 
 MCoord Move::getAngleX(MAngle angle) {
