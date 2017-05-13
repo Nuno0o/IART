@@ -42,9 +42,14 @@ public:
 	
 	Piece getPiece(MCoord x, MCoord y);
 	static int getPieceValue(Piece p);
-	
+	//Get the score of a team
 	int getTeamScore(Team team);
+	//Get team score difference, faster than calling getTeamScore twice
+	int getTeamScoreDiff();
+	//Get number of pieces in trench
 	int getNInTrench(Team team);
+	//Get number of piecer in trench difference, faster than calling getNInTrench twice
+	int getNInTrenchDiff();
 	Team getGameEnded();
 	
 

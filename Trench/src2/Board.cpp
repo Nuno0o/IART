@@ -26,6 +26,7 @@ std::vector<Board> Board::getAllBoards(Board original, std::vector<Move> & moves
 std::vector<Move> Board::getAllMoves(Team team) {
 	//List of all moves for the team
 	std::vector<Move> ret;
+	ret.reserve(80);
 	//Team for bitwise cmp
 	Piece pteam;
 	switch (team)
@@ -55,6 +56,7 @@ std::vector<Move> Board::getAllMoves(Team team) {
 
 std::vector<Move> Board::getPieceMoves(MCoord x, MCoord y) {
 	std::vector<Move> ret;
+	ret.reserve(9);
 	//Get piece at coords
 	Piece p = board[y][x];
 	//Checks if piece is at the trench
@@ -63,8 +65,6 @@ std::vector<Move> Board::getPieceMoves(MCoord x, MCoord y) {
 	bool atFriendlyTerritory = (p & BLACK && x > y) || (p & WHITE && x < y);
 	//Length the piece can move
 	MLength maxLength = Move::getMaxLength(p);
-
-	
 	for (MAngle angles = 0; angles < 8; angles++) {
 		for (MLength length = 1; length <= maxLength; length++) {
 			if (Move::legalAngle(angles, p)) {
@@ -144,6 +144,22 @@ int Board::getTeamScore(Team team) {
 	return total;
 }
 
+int Board::getTeamScoreDiff() {
+	Piece enemyTeam;
+	int total = 0;
+	for (int i = 0; i < board.size(); i++) {
+		for (int j = 0; j < board.size(); j++) {
+			if (board[i][j] & WHITE) {
+				total += getPieceValue(board[i][j]);
+			}
+			else if (board[i][j] & BLACK) {
+				total -= getPieceValue(board[i][j]);
+			}
+		}
+	}
+	return total;
+}
+
 int Board::getNInTrench(Team team) {
 	Piece allyTeam;
 	if (team == Black) {
@@ -155,6 +171,18 @@ int Board::getNInTrench(Team team) {
 	for (int i = 0; i < board.size(); i++) {
 		if (board[i][i] & allyTeam)
 			total++;
+	}
+	return total;
+}
+
+int Board::getNInTrenchDiff() {
+	int total = 0;
+	for (int i = 0; i < board.size(); i++) {
+		if (board[i][i] & WHITE)
+			total++;
+		else if (board[i][i] & BLACK) {
+			total--;
+		}
 	}
 	return total;
 }
@@ -179,10 +207,8 @@ Board Board::movePiece(Move move) {
 
 SHeur Board::calculateScore() {
 	SHeur ret = 0;
-	ret += getTeamScore(White);
-	ret += getNInTrench(White);
-	ret -= getTeamScore(Black);
-	ret -= getNInTrench(Black);
+	ret += getTeamScoreDiff();
+	ret += getNInTrenchDiff();
 	return ret;
 }
 

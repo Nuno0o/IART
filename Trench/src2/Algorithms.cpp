@@ -11,6 +11,7 @@ Board Algorithms::negamaxWithoutABP(Board & b, int depth, Team team) {
 	std::vector<SHeur> allHeurs;
 	//Try all moves
 	for (int i = 0; i < moves.size(); i++) {
+		printf("one\n");
 		SHeur next = negamaxWithoutABPAux(boards[i], depth - 1, team);
 		allHeurs.push_back(next);
 	}
