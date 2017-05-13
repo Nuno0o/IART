@@ -3,17 +3,23 @@
 #include "Printer.h"
 
 void printBoard(Board& b) {
-	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(console, (COLOR_DARKGRAY << 4) | COLOR_BLACK);
 	std::cout << " |  0  |  1  |  2  |  3  |  4  |  5  |  6  |  7  |\n";
 	std::cout << "-+-----+-----+-----+-----+-----+-----+-----+-----+\n";
 	for (int i = 0; i < BOARD_SIZE; i++) {
 		std::cout << " |";
 		for (int j = 0; j < BOARD_SIZE; j++) {
+			Piece p = b.getPiece(i, j);
 			if (i == j) {
-				std::cout << "\\    |";
+				std::cout << "\\ ";
 			}else
-			std::cout << "     |";
+			std::cout << "  ";
+			if (p & BLACK) {
+				std::cout << "B  |";
+			}
+			else if (p & WHITE) {
+				std::cout << "W  |";
+			}
+			else std::cout << "   |";
 		}
 		std::cout << "\n";
 		std::cout << i <<"|";
@@ -26,12 +32,7 @@ void printBoard(Board& b) {
 				else
 					std::cout << "     ";
 			}
-			if (p & BLACK) {
-				SetConsoleTextAttribute(console, (COLOR_DARKGRAY << 4) | COLOR_BLACK);
-			}
-			else if (p & WHITE) {
-				SetConsoleTextAttribute(console, (COLOR_DARKGRAY << 4) | COLOR_WHITE);
-			}
+			
 			if (p & SLD) {
 				std::cout << " SLD ";
 			}
@@ -47,7 +48,6 @@ void printBoard(Board& b) {
 			else if (p & GEN) {
 				std::cout << " GEN ";
 			}
-			SetConsoleTextAttribute(console, (COLOR_DARKGRAY << 4) | COLOR_BLACK);
 			std::cout << "|";
 		}
 		std::cout << "\n";
