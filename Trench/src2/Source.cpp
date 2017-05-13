@@ -1,5 +1,7 @@
 #include "Printer.h"
 #include "Board.h"
+#include "Interface.h"
+#include <time.h>
 
 
 void listMoves(std::vector<Move> moves) {
@@ -8,9 +10,15 @@ void listMoves(std::vector<Move> moves) {
 	}
 }
 void main() {
-	Board b = Board();
-	printBoard(&b);
-	std::vector<Move> moves = b.getAllMoves(Black);
-	Board b2 = b.movePiece(moves[0]);
-	printBoard(&b2);
+	srand(time(0));
+	Interface();
+	
+	//Board b = Board();
+	//printBoard(b);
+	//listMoves(b.getAllMoves(White));
+	//listMoves(b.getAllMoves(Black));
+	//Board b2 = Algorithms::negamaxWithoutABP(b,3,White);
+	//Board b2 = b.movePiece(b.getAllMoves(Black)[6]);
+	//printBoard(b2);
+	
 }

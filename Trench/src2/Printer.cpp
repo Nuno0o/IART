@@ -2,7 +2,7 @@
 
 #include "Printer.h"
 
-void printBoard(Board* b) {
+void printBoard(Board& b) {
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(console, (COLOR_DARKGRAY << 4) | COLOR_BLACK);
 	std::cout << "\\-----+-----+-----+-----+-----+-----+-----+-----+";
@@ -18,7 +18,7 @@ void printBoard(Board* b) {
 		std::cout << "\n";
 		std::cout << "|";
 		for (int j = 0; j < BOARD_SIZE; j++) {
-			Piece p = b->getPiece(i, j);
+			Piece p = b.getPiece(i, j);
 			if (p & EMPTY) {
 				if (i == j) {
 					std::cout << "  \\  ";

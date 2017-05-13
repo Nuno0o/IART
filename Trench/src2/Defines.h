@@ -23,12 +23,16 @@
 typedef char MCoord;
 //Move angle
 //1 -> (0,1) , 2 -> (1,1) , 3 -> (1,0)...(continues clockwise)
-typedef unsigned char MAngle;
+typedef char MAngle;
 //Move length
 typedef unsigned char MLength;
 //Minimax score(state score)
 typedef int SHeur;
 //Team
 enum Team : char {
-	White = 1, Black = -1
+	White = 1, Black = -1, None = 0
+};
+//Player
+enum PlayerType : char {
+	Human,MinMax,MinMaxAB
 };

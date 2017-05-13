@@ -36,6 +36,7 @@ private:
 	
 public:
 	Board();
+	static std::vector<Board> getAllBoards(Board original, std::vector<Move> & moves);
 	std::vector<Move> getAllMoves(Team team);
 	std::vector<Move> getPieceMoves(MCoord x,MCoord y);
 	
@@ -43,10 +44,11 @@ public:
 	static int getPieceValue(Piece p);
 	
 	int getTeamScore(Team team);
-	bool getGameEnded();
+	int getNInTrench(Team team);
+	Team getGameEnded();
 	
 
 	Board movePiece(Move move);
 
-	SHeur calculateScore(Team team);
+	SHeur calculateScore();
 };

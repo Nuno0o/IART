@@ -2,4 +2,4 @@
 
 #include "Board.h"
 
-void printBoard(Board* b);
+void printBoard(Board& b);

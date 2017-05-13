@@ -12,6 +12,15 @@ Board::Board() {
 		{WHITE | LIT    ,WHITE | CPT    ,WHITE | SRG    ,WHITE | SLD    ,EMPTY        ,EMPTY        ,EMPTY        ,EMPTY        },
 		{WHITE | GEN    ,WHITE | LIT    ,WHITE | CPT    ,WHITE | SRG    ,EMPTY        ,EMPTY        ,EMPTY        ,EMPTY        }
 	};
+	
+}
+
+std::vector<Board> Board::getAllBoards(Board original, std::vector<Move> & moves) {
+	std::vector<Board> boards;
+	for (int i = 0; i < moves.size(); i++) {
+		boards.push_back(original.movePiece(moves[i]));
+	}
+	return boards;
 }
 
 std::vector<Move> Board::getAllMoves(Team team) {
@@ -85,17 +94,17 @@ std::vector<Move> Board::getPieceMoves(MCoord x, MCoord y) {
 						break;
 					}
 					//If target is in enemy field and current in trench
-					else if (atTrench && (p & BLACK && xdest < ydest) || (p & WHITE && xdest > ydest)) {
+					else if (atTrench && ((p & BLACK && xdest < ydest) || (p & WHITE && xdest > ydest))) {
 						Move move = Move(x, y, xdest, ydest);
 						ret.push_back(move);
 						//Continue pois pode comer mais peças na mesma linha caso esteja na trincheira
 						continue;
 					}
 					//If target is in ally field and current in trench
-					else if (atTrench && (p & BLACK && xdest > ydest) || (p & WHITE && xdest < ydest)) {
+					else if (atTrench && ((p & BLACK && xdest > ydest) || (p & WHITE && xdest < ydest))) {
 						break;
 					}
-					else if (!atTrench && xdest == ydest && atFriendlyTerritory) {
+					else if (!atTrench && xdest == ydest) {
 						if (atFriendlyTerritory) {
 							break;
 						}
@@ -124,7 +133,7 @@ int Board::getTeamScore(Team team) {
 	}
 	else enemyTeam = BLACK;
 
-	int total = 36;
+	int total = 72;
 	for (int i = 0; i < board.size(); i++) {
 		for (int j = 0; j < board.size(); j++) {
 			if (board[i][j] & enemyTeam) {
@@ -135,8 +144,29 @@ int Board::getTeamScore(Team team) {
 	return total;
 }
 
-bool Board::getGameEnded() {
-	return getTeamScore(Black) == 36 || getTeamScore(White) == 36;
+int Board::getNInTrench(Team team) {
+	Piece allyTeam;
+	if (team == Black) {
+		allyTeam = BLACK;
+	}
+	else allyTeam = WHITE;
+
+	int total = 0;
+	for (int i = 0; i < board.size(); i++) {
+		if (board[i][i] & allyTeam)
+			total++;
+	}
+	return total;
+}
+
+Team Board::getGameEnded() {
+	if (getTeamScore(Black) >= 42) {
+		return Black;
+	}
+	else if (getTeamScore(White) >= 42) {
+		return White;
+	}
+	else return None;
 }
 
 Board Board::movePiece(Move move) {
@@ -147,8 +177,13 @@ Board Board::movePiece(Move move) {
 	return b;
 }
 
-SHeur Board::calculateScore(Team team) {
-	return 0;
+SHeur Board::calculateScore() {
+	SHeur ret = 0;
+	ret += getTeamScore(White);
+	ret += getNInTrench(White);
+	ret -= getTeamScore(Black);
+	ret -= getNInTrench(Black);
+	return ret;
 }
 
 ////////////////////////////// MOVE ///////////////////////////////
@@ -184,7 +219,7 @@ int Board::getPieceValue(Piece p) {
 	Piece paux = p;
 	for (int i = 1; i < 6; paux >>= 1,i++) {
 		if (paux & 1) {
-			return i;
+			return 2*i;
 		}
 	}
 	return -1;
@@ -253,31 +288,11 @@ bool Move::legalAngle(MAngle angle, Piece p) {
 }
 
 MLength Move::getMaxLength(Piece p) {
-	//If it's a soldier
-	if (p & SLD) {
-		return 1;
-	}
-	else
-		//If it's a seargent
-		if (p & SRG) {
-			return 2;
+	Piece paux = p;
+	for (int i = 1; i < 6; paux >>= 1, i++) {
+		if (paux & 1) {
+			return i;
 		}
-		else
-			//If it's a captain
-			if (p & CPT) {
-				return 3;
-			}
-			else
-				//If it's a lieutenant
-				if (p & LIT) {
-					return 4;
-				}
-				else
-					//If it's a general
-					if (p & GEN)
-					{
-						return 5;
-					}
-	//Empty
+	}
 	return 0;
 }
