@@ -41,7 +41,8 @@ Interface::Interface() {
 void Interface::Play() {
 	std::cout << "\nGame is starting...\n";
 	Team turn = White;
-	while (!game.board.getGameEnded()) {
+	Team won = None;
+	while (won == None) {
 		//Retrieve player settings for player
 		PlayerSettings p;
 
@@ -86,12 +87,18 @@ void Interface::Play() {
 			game.board = Algorithms::negamaxWithoutABP(game.board, p.depth, turn);
 		}
 		else if (p.type == MinMaxAB) {
-			game.board = Algorithms::negamaxWithoutABP(game.board, p.depth, turn);
+			game.board = Algorithms::negamaxWithABP(game.board, p.depth, turn);
 		}
 		if (turn == White) {
 			turn = Black;
 		}
 		else turn = White;
-
+		won = game.board.getGameEnded();
+	}
+	if (won == Black) {
+		std::cout << "\nBlack won\n";
+	}
+	else if (won == White) {
+		std::cout << "\nWhite won\n";
 	}
 }
