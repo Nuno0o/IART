@@ -5,10 +5,10 @@
 void printBoard(Board& b) {
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(console, (COLOR_DARKGRAY << 4) | COLOR_BLACK);
-	std::cout << "\\-----+-----+-----+-----+-----+-----+-----+-----+";
-	std::cout << "\n";
+	std::cout << " |  0  |  1  |  2  |  3  |  4  |  5  |  6  |  7  |\n";
+	std::cout << "-+-----+-----+-----+-----+-----+-----+-----+-----+\n";
 	for (int i = 0; i < BOARD_SIZE; i++) {
-		std::cout << "|";
+		std::cout << " |";
 		for (int j = 0; j < BOARD_SIZE; j++) {
 			if (i == j) {
 				std::cout << "\\    |";
@@ -16,7 +16,7 @@ void printBoard(Board& b) {
 			std::cout << "     |";
 		}
 		std::cout << "\n";
-		std::cout << "|";
+		std::cout << i <<"|";
 		for (int j = 0; j < BOARD_SIZE; j++) {
 			Piece p = b.getPiece(i, j);
 			if (p & EMPTY) {
@@ -51,7 +51,7 @@ void printBoard(Board& b) {
 			std::cout << "|";
 		}
 		std::cout << "\n";
-		std::cout << "|";
+		std::cout << " |";
 		for (int j = 0; j < BOARD_SIZE; j++) {
 			if (i == j) {
 				std::cout << "    \\|";
@@ -60,13 +60,10 @@ void printBoard(Board& b) {
 				std::cout << "     |";
 		}
 		std::cout << "\n";
-		std::cout << "+";
+		std::cout << "-+";
 		for (int j = 0; j < BOARD_SIZE; j++) {
 			std::cout << "-----";
-			if (j == i) {
-				std::cout << "\\";
-			}
-			else std::cout << "+";
+			std::cout << "+";
 		}
 		std::cout << "\n";
 	}
