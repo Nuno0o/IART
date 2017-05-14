@@ -56,7 +56,7 @@ std::vector<Move> Board::getAllMoves(Team team) {
 
 std::vector<Move> Board::getPieceMoves(MCoord x, MCoord y) {
 	std::vector<Move> ret;
-	ret.reserve(9);
+	ret.reserve(8);
 	//Get piece at coords
 	Piece p = board[y][x];
 	//Checks if piece is at the trench
