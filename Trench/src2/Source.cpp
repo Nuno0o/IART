@@ -2,8 +2,6 @@
 #include "Board.h"
 #include "Interface.h"
 #include <time.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 
 void listMoves(std::vector<Move> moves) {
