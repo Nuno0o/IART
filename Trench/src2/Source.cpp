@@ -2,6 +2,8 @@
 #include "Board.h"
 #include "Interface.h"
 #include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 
 void listMoves(std::vector<Move> moves) {
@@ -9,10 +11,10 @@ void listMoves(std::vector<Move> moves) {
 		std::cout << "Move:(" << (int)moves[i].getSX() << "," << (int)moves[i].getSY() << ") to (" << (int)moves[i].getDX() << "," << (int)moves[i].getDY() << ")\n";
 	}
 }
-void main() {
+int main() {
 	srand(time(0));
 	Interface();
-	
+    return 0;
 	//Board b = Board();
 	//printBoard(b);
 	//listMoves(b.getAllMoves(White));
@@ -20,5 +22,5 @@ void main() {
 	//Board b2 = Algorithms::negamaxWithoutABP(b,3,White);
 	//Board b2 = b.movePiece(b.getAllMoves(Black)[6]);
 	//printBoard(b2);
-	
+
 }

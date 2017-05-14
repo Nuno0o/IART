@@ -1,8 +1,9 @@
 #include "Algorithms.h"
-
+#include <stdio.h>
+#include <stdlib.h>
 Board Algorithms::negamaxWithoutABP(Board & b, int depth, Team team) {
 	if (depth < 1) {
-		throw std::invalid_argument("Depth must be > 1");
+		throw "Depth must be > 1";
 	}
 	//Get all child nodes
 	std::vector<Move> moves = b.getAllMoves(team);
@@ -60,7 +61,7 @@ SHeur Algorithms::negamaxWithoutABPAux(Board & b, int depth, Team team) {
 
 Board Algorithms::negamaxWithABP(Board & b, int depth, Team team) {
 	if (depth < 1) {
-		throw std::invalid_argument("Depth must be > 1");
+		throw "Depth must be > 1";
 	}
 	//Get all child nodes
 	std::vector<Move> moves = b.getAllMoves(team);

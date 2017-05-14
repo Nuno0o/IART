@@ -32,14 +32,14 @@ public:
 
 class Board {
 private:
-	std::vector<std::vector<Piece>> board;
-	
+	std::vector<std::vector<Piece> > board;
+
 public:
 	Board();
 	static std::vector<Board> getAllBoards(Board original, std::vector<Move> & moves);
 	std::vector<Move> getAllMoves(Team team);
 	std::vector<Move> getPieceMoves(MCoord x,MCoord y);
-	
+
 	Piece getPiece(MCoord x, MCoord y);
 	static int getPieceValue(Piece p);
 	//Get the score of a team
@@ -51,7 +51,7 @@ public:
 	//Get number of piecer in trench difference, faster than calling getNInTrench twice
 	int getNInTrenchDiff();
 	Team getGameEnded();
-	
+
 
 	Board movePiece(Move move);
 

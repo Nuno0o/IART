@@ -12,7 +12,7 @@ Board::Board() {
 		{WHITE | LIT    ,WHITE | CPT    ,WHITE | SRG    ,WHITE | SLD    ,EMPTY        ,EMPTY        ,EMPTY        ,EMPTY        },
 		{WHITE | GEN    ,WHITE | LIT    ,WHITE | CPT    ,WHITE | SRG    ,EMPTY        ,EMPTY        ,EMPTY        ,EMPTY        }
 	};
-	
+
 }
 
 std::vector<Board> Board::getAllBoards(Board original, std::vector<Move> & moves) {
