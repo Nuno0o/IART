@@ -1,5 +1,3 @@
-#include <Windows.h>
-
 #include "Printer.h"
 
 void printBoard(Board& b) {
@@ -32,7 +30,7 @@ void printBoard(Board& b) {
 				else
 					std::cout << "     ";
 			}
-			
+
 			if (p & SLD) {
 				std::cout << " SLD ";
 			}
