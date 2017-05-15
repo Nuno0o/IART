@@ -73,9 +73,14 @@ Board Algorithms::negamaxWithABP(Board & b, int depth, Team team) {
 	std::vector<Board> boards = b.getAllBoards(b, moves);
 	//Best choice
 	std::vector<SHeur> allHeurs;
+	Team nextTeam;
+	if (team == Black) {
+		nextTeam = White;
+	}
+	else nextTeam = Black;
 	//Try all moves
 	for (int i = 0; i < moves.size(); i++) {
-		SHeur next = negamaxWithABPAux(boards[i], depth - 1, team, -10000000000,10000000000);
+		SHeur next = -negamaxWithABPAux(boards[i], depth - 1, nextTeam, -10000000000,10000000000);
 		allHeurs.push_back(next);
 	}
 	std::vector<int> bestIndexes;
@@ -111,7 +116,7 @@ SHeur Algorithms::negamaxWithABPAux(Board & b, int depth, Team team,int alpha, i
 	//Best choice
 	SHeur best = -100000000000;
 	//Try all moves
-	std::vector<Move> moves = b.getAllMoves(nextTeam);
+	std::vector<Move> moves = b.getAllMoves(team);
 	std::vector<Board> boards = b.getAllBoards(b, moves);
 	for (int i = 0; i < moves.size(); i++) {
 		SHeur next = -negamaxWithABPAux(boards[i], depth - 1, nextTeam,-beta,-alpha);
