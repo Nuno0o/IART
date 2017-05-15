@@ -5,12 +5,12 @@ Board::Board() {
 	{
 		{EMPTY        ,EMPTY        ,EMPTY        ,EMPTY        ,BLACK | SRG    ,BLACK | CPT    ,BLACK | LIT    ,BLACK | GEN    },
 		{EMPTY        ,EMPTY        ,EMPTY        ,EMPTY        ,BLACK | SLD    ,BLACK | SRG    ,BLACK | CPT    ,BLACK | LIT    },
-		{EMPTY        ,EMPTY        ,EMPTY        ,EMPTY        ,BLACK | SLD    ,BLACK | SLD    ,BLACK | SRG    ,BLACK | CPT    },
+		{EMPTY        ,EMPTY        ,EMPTY        ,WHITE | GEN        ,BLACK | SLD    ,BLACK | SLD    ,BLACK | SRG    ,BLACK | CPT    },
 		{EMPTY        ,EMPTY        ,EMPTY        ,EMPTY        ,BLACK | SLD    ,BLACK | SLD    ,BLACK | SLD    ,BLACK | SRG    },
 		{WHITE | SRG    ,WHITE | SLD    ,WHITE | SLD    ,WHITE | SLD    ,EMPTY        ,EMPTY        ,EMPTY        ,EMPTY        },
 		{WHITE | CPT    ,WHITE | SRG    ,WHITE | SLD    ,WHITE | SLD    ,EMPTY        ,EMPTY        ,EMPTY        ,EMPTY        },
 		{WHITE | LIT    ,WHITE | CPT    ,WHITE | SRG    ,WHITE | SLD    ,EMPTY        ,EMPTY        ,EMPTY        ,EMPTY        },
-		{WHITE | GEN    ,WHITE | LIT    ,WHITE | CPT    ,WHITE | SRG    ,EMPTY        ,EMPTY        ,EMPTY        ,EMPTY        }
+		{EMPTY    ,WHITE | LIT    ,WHITE | CPT    ,WHITE | SRG    ,EMPTY        ,EMPTY        ,EMPTY        ,EMPTY        }
 	};
 
 }
@@ -201,7 +201,20 @@ Board Board::movePiece(Move move) {
 	Board b = Board();
 	b.board = this->board;
 	b.board[move.getDY()][move.getDX()] = b.board[move.getSY()][move.getSX()];
-	b.board[move.getSY()][move.getSX()] = EMPTY;
+	MCoord deltax,deltay;
+	if((move.getDX() - move.getSX()) != 0)
+        deltax = (move.getDX() - move.getSX())/(abs(move.getDX() - move.getSX()));
+    else deltax = 0;
+    if((move.getDY() - move.getSY()) != 0)
+        deltay = (move.getDY() - move.getSY())/(abs(move.getDY() - move.getSY()));
+    else deltay = 0;
+	int sourcex = move.getSX();
+	int sourcey = move.getSY();
+	while(!(sourcex == move.getDX() && sourcey == move.getDY())){
+        b.board[sourcey][sourcex] = EMPTY;
+        sourcex += deltax;
+        sourcey += deltay;
+	}
 	return b;
 }
 
