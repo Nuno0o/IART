@@ -54,9 +54,9 @@ SHeur Algorithms::negamaxWithoutABPAux(Board & b, int depth, Team team) {
 	SHeur best = -100000000000;
 	//Try all moves
 	std::vector<Move> moves = b.getAllMoves(team);
-	std::vector<Board> boards = b.getAllBoards(b, moves);
 	for (int i = 0; i < moves.size(); i++) {
-		SHeur next = -negamaxWithoutABPAux(boards[i],depth-1,nextTeam);
+        Board b2 = b.movePiece(moves[i]);
+		SHeur next = -negamaxWithoutABPAux(b2,depth-1,nextTeam);
 		if (next > best) {
 			best = next;
 		}
@@ -117,9 +117,9 @@ SHeur Algorithms::negamaxWithABPAux(Board & b, int depth, Team team,int alpha, i
 	SHeur best = -100000000000;
 	//Try all moves
 	std::vector<Move> moves = b.getAllMoves(team);
-	std::vector<Board> boards = b.getAllBoards(b, moves);
 	for (int i = 0; i < moves.size(); i++) {
-		SHeur next = -negamaxWithABPAux(boards[i], depth - 1, nextTeam,-beta,-alpha);
+        Board b2 = b.movePiece(moves[i]);
+		SHeur next = -negamaxWithABPAux(b2, depth - 1, nextTeam,-beta,-alpha);
 		if (next > best) {
 			best = next;
 		}
