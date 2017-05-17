@@ -38,8 +38,8 @@ private:
 public:
 	Board();
 	static std::vector<Board> getAllBoards(Board original, std::list<Move> & moves);
-	std::list<Move> & getAllMoves(Team team);
-	std::list<Move> & getPieceMoves(MCoord x,MCoord y);
+	std::list<Move> getAllMoves(Team team);
+	std::list<Move> getPieceMoves(MCoord x,MCoord y);
 
 	Piece getPiece(MCoord x, MCoord y);
 	static int getPieceValue(Piece p);
@@ -51,10 +51,12 @@ public:
 	int getNInTrench(Team team);
 	//Get number of piecer in trench difference, faster than calling getNInTrench twice
 	int getNInTrenchDiff();
+	//Get difference of pieces in trench vs enemy territory(for example, if enemy has 1 piece in trench and i have 1 piece in enemy territory,the difference is 0)
+	int getNTrenchEnemySideDiff();
 	Team getGameEnded();
 
-
+    //Moves a piece, returning a new board
 	Board movePiece(Move move);
-
+    //Calculates global score based on heuristics.Positive values indicate white team adjantage, while negative indicate black team advantage
 	SHeur calculateScore();
 };

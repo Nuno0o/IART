@@ -1,6 +1,8 @@
 #include "Interface.h"
 #include "Printer.h"
 #include "Algorithms.h"
+#include <chrono>
+#include <ctime>
 #include <iostream>
 Interface::Interface() {
 	std::cout << "Welcome to trench!\n\n";
@@ -84,10 +86,16 @@ void Interface::Play() {
 			}
 		}
 		else if (p.type == MinMax) {
+            auto t_start = std::chrono::high_resolution_clock::now();
 			game.board = Algorithms::negamaxWithoutABP(game.board, p.depth, turn);
+            auto t_end = std::chrono::high_resolution_clock::now();
+            std::cout << "Time taken: " << std::chrono::duration<double, std::milli>(t_end-t_start).count() << "ms\n";
 		}
 		else if (p.type == MinMaxAB) {
+            auto t_start = std::chrono::high_resolution_clock::now();
 			game.board = Algorithms::negamaxWithABP(game.board, p.depth, turn);
+            auto t_end = std::chrono::high_resolution_clock::now();
+            std::cout << "Time taken: " << std::chrono::duration<double, std::milli>(t_end-t_start).count() << "ms\n";
 		}
 		if (turn == White) {
 			turn = Black;

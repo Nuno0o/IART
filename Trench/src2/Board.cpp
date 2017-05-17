@@ -1,5 +1,6 @@
 #include "Board.h"
 #include <iostream>
+#include <cstdlib>
 Board::Board() {
 	board =
 	{
@@ -23,9 +24,9 @@ std::vector<Board> Board::getAllBoards(Board original, std::list<Move> & moves) 
 	return boards;
 }
 
-std::list<Move> & Board::getAllMoves(Team team) {
+std::list<Move> Board::getAllMoves(Team team) {
 	//List of all moves for the team
-	std::list<Move> * ret = new std::list<Move>;
+	std::list<Move> ret;
 	//Team for bitwise cmp
 	Piece pteam;
 	switch (team)
@@ -44,17 +45,17 @@ std::list<Move> & Board::getAllMoves(Team team) {
 		for (MCoord j = 0; j < this->board.size(); j++) {
 			if (pteam & board[i][j]) {
 				std::list<Move> moves = getPieceMoves(j, i);
-				ret->splice(ret->end(),moves);
+				ret.splice(ret.end(),moves);
 			}
 		}
 	}
-	return *ret;
+	return ret;
 }
 
 
 
-std::list<Move> & Board::getPieceMoves(MCoord x, MCoord y) {
-	std::list<Move> * ret = new std::list<Move>;
+std::list<Move> Board::getPieceMoves(MCoord x, MCoord y) {
+	std::list<Move> ret;
 	//Get piece at coords
 	Piece p = board[y][x];
 	//Checks if piece is at the trench
@@ -80,7 +81,7 @@ std::list<Move> & Board::getPieceMoves(MCoord x, MCoord y) {
 				//If destiny is empty
 				if (p2 & EMPTY) {
 					Move move = Move(x, y, xdest, ydest);
-					ret->push_back(move);
+					ret.push_back(move);
 					continue;
 				}
 				//If destiny is friend
@@ -96,14 +97,14 @@ std::list<Move> & Board::getPieceMoves(MCoord x, MCoord y) {
                         }
                         else if ((p & BLACK && xdest < ydest) || (p & WHITE && xdest > ydest)) {
                             Move move = Move(x, y, xdest, ydest);
-                            ret->push_back(move);
+                            ret.push_back(move);
                             //Continue pois pode comer mais peças na mesma linha caso esteja na trincheira
                             continue;
                         }
                         //If target is in enemy field and current in trench
                         else if ((p & BLACK && xdest < ydest) || (p & WHITE && xdest > ydest)) {
                             Move move = Move(x, y, xdest, ydest);
-                            ret->push_back(move);
+                            ret.push_back(move);
                             //Continue pois pode comer mais peças na mesma linha caso esteja na trincheira
                             continue;
                         }
@@ -118,13 +119,13 @@ std::list<Move> & Board::getPieceMoves(MCoord x, MCoord y) {
                             }
                             else {
                                 Move move = Move(x, y, xdest, ydest);
-                                ret->push_back(move);
+                                ret.push_back(move);
                                 break;
                             }
                         }else
                         if (xdest != ydest) {
                             Move move = Move(x, y, xdest, ydest);
-                            ret->push_back(move);
+                            ret.push_back(move);
                             break;
                         }
                     }
@@ -132,7 +133,7 @@ std::list<Move> & Board::getPieceMoves(MCoord x, MCoord y) {
 			}
 		}
 	}
-	return *ret;
+	return ret;
 }
 
 int Board::getTeamScore(Team team) {
@@ -196,6 +197,30 @@ int Board::getNInTrenchDiff() {
 	return total;
 }
 
+int Board::getNTrenchEnemySideDiff(){
+    int nwhitestrench;
+    int nblackstrench;
+    int nwhitesenemy;
+    int nblacksenemy;
+    for(int i = 0;i < board.size();i++){
+        for(int j = 0;j < board.size();j++){
+            if(i == j){
+                if(board[i][j] & BLACK){
+                    nblackstrench++;
+                }else if(board[i][j] & WHITE){
+                    nwhitestrench++;
+                }
+            }
+            else if(i > j && board[i][j] & BLACK){
+                nblacksenemy++;
+            }else if(i < j && board[i][j] & WHITE){
+                nwhitesenemy++;
+            }
+        }
+    }
+    return std::abs(nblackstrench - nwhitesenemy) - std::abs(nwhitestrench - nblacksenemy);
+}
+
 Team Board::getGameEnded() {
 	if (getTeamScore(Black) >= 42) {
 		return Black;
@@ -207,7 +232,7 @@ Team Board::getGameEnded() {
 }
 
 Board Board::movePiece(Move move) {
-	Board b = Board();
+	Board b;
 	b.board = this->board;
 	b.board[move.getDY()][move.getDX()] = b.board[move.getSY()][move.getSX()];
 	MCoord deltax,deltay;
@@ -231,6 +256,7 @@ SHeur Board::calculateScore() {
 	SHeur ret = 0;
 	ret += getTeamScoreDiff();
 	ret += getNInTrenchDiff();
+	ret += getNTrenchEnemySideDiff();
 	return ret;
 }
 
