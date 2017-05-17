@@ -23,10 +23,10 @@ std::vector<Board> Board::getAllBoards(Board original, std::vector<Move> & moves
 	return boards;
 }
 
-std::vector<Move> Board::getAllMoves(Team team) {
+std::vector<Move> & Board::getAllMoves(Team team) {
 	//List of all moves for the team
-	std::vector<Move> ret;
-	ret.reserve(80);
+	std::vector<Move> * ret = new std::vector<Move>;
+	ret->reserve(80);
 	//Team for bitwise cmp
 	Piece pteam;
 	switch (team)
@@ -45,18 +45,18 @@ std::vector<Move> Board::getAllMoves(Team team) {
 		for (MCoord j = 0; j < this->board.size(); j++) {
 			if (pteam & board[i][j]) {
 				std::vector<Move> moves = getPieceMoves(j, i);
-				ret.insert(ret.end(), moves.begin(), moves.end());
+				ret->insert(ret->end(), moves.begin(), moves.end());
 			}
 		}
 	}
-	return ret;
+	return *ret;
 }
 
 
 
-std::vector<Move> Board::getPieceMoves(MCoord x, MCoord y) {
-	std::vector<Move> ret;
-	ret.reserve(8);
+std::vector<Move> & Board::getPieceMoves(MCoord x, MCoord y) {
+	std::vector<Move> * ret = new std::vector<Move>;
+	ret->reserve(8);
 	//Get piece at coords
 	Piece p = board[y][x];
 	//Checks if piece is at the trench
@@ -66,7 +66,9 @@ std::vector<Move> Board::getPieceMoves(MCoord x, MCoord y) {
 	//Length the piece can move
 	MLength maxLength = Move::getMaxLength(p);
 	for (MAngle angles = 0; angles < 8; angles++) {
+	    //Run through all lengths.Note that when an allied piece is found or an enemy, no further lengths are tested because the piece can't move behind(except when at trench)
 		for (MLength length = 1; length <= maxLength; length++) {
+            //If move is legal
 			if (Move::legalAngle(angles, p)) {
 				//Get destiny coords
 				MCoord ydest = y + Move::getAngleY(angles)*length;
@@ -80,7 +82,7 @@ std::vector<Move> Board::getPieceMoves(MCoord x, MCoord y) {
 				//If destiny is empty
 				if (p2 & EMPTY) {
 					Move move = Move(x, y, xdest, ydest);
-					ret.push_back(move);
+					ret->push_back(move);
 					continue;
 				}
 				//If destiny is friend
@@ -89,41 +91,50 @@ std::vector<Move> Board::getPieceMoves(MCoord x, MCoord y) {
 				}
 				//If destiny is enemy
 				else{
-					//If both target and origin are trench
-					if (atTrench && xdest == ydest) {
-						break;
-					}
-					//If target is in enemy field and current in trench
-					else if (atTrench && ((p & BLACK && xdest < ydest) || (p & WHITE && xdest > ydest))) {
-						Move move = Move(x, y, xdest, ydest);
-						ret.push_back(move);
-						//Continue pois pode comer mais peças na mesma linha caso esteja na trincheira
-						continue;
-					}
-					//If target is in ally field and current in trench
-					else if (atTrench && ((p & BLACK && xdest > ydest) || (p & WHITE && xdest < ydest))) {
-						break;
-					}
-					else if (!atTrench && xdest == ydest) {
-						if (atFriendlyTerritory) {
-							break;
-						}
-						else {
-							Move move = Move(x, y, xdest, ydest);
-							ret.push_back(move);
-							break;
-						}
-					}
-					else if (!atTrench && xdest != ydest) {
-						Move move = Move(x, y, xdest, ydest);
-						ret.push_back(move);
-						break;
-					}
+                    if(atTrench){
+                        //If both target and origin are trench
+                        if (xdest == ydest) {
+                            break;
+                        }
+                        else if ((p & BLACK && xdest < ydest) || (p & WHITE && xdest > ydest)) {
+                            Move move = Move(x, y, xdest, ydest);
+                            ret->push_back(move);
+                            //Continue pois pode comer mais peças na mesma linha caso esteja na trincheira
+                            continue;
+                        }
+                        //If target is in enemy field and current in trench
+                        else if ((p & BLACK && xdest < ydest) || (p & WHITE && xdest > ydest)) {
+                            Move move = Move(x, y, xdest, ydest);
+                            ret->push_back(move);
+                            //Continue pois pode comer mais peças na mesma linha caso esteja na trincheira
+                            continue;
+                        }
+                        //If target is in ally field and current in trench
+                        else if ((p & BLACK && xdest > ydest) || (p & WHITE && xdest < ydest)) {
+                            break;
+                        }
+                    }else{
+                        if (xdest == ydest) {
+                            if (atFriendlyTerritory) {
+                                break;
+                            }
+                            else {
+                                Move move = Move(x, y, xdest, ydest);
+                                ret->push_back(move);
+                                break;
+                            }
+                        }else
+                        if (xdest != ydest) {
+                            Move move = Move(x, y, xdest, ydest);
+                            ret->push_back(move);
+                            break;
+                        }
+                    }
 				}
 			}
 		}
 	}
-	return ret;
+	return *ret;
 }
 
 int Board::getTeamScore(Team team) {
