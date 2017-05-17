@@ -136,99 +136,26 @@ std::list<Move> Board::getPieceMoves(MCoord x, MCoord y) {
 	return ret;
 }
 
-int Board::getTeamScore(Team team) {
-	Piece enemyTeam;
-	if (team == Black) {
-		enemyTeam = WHITE;
-	}
-	else enemyTeam = BLACK;
+Team Board::getGameEnded() {
+    int totalBlack = 72;
+    int totalWhite = 72;
 
-	int total = 72;
-	for (int i = 0; i < board.size(); i++) {
-		for (int j = 0; j < board.size(); j++) {
-			if (board[i][j] & enemyTeam) {
-				total -= getPieceValue(board[i][j]);
-			}
-		}
-	}
-	return total;
-}
 
-int Board::getTeamScoreDiff() {
-	Piece enemyTeam;
-	int total = 0;
-	for (int i = 0; i < board.size(); i++) {
-		for (int j = 0; j < board.size(); j++) {
-			if (board[i][j] & WHITE) {
-				total += getPieceValue(board[i][j]);
-			}
-			else if (board[i][j] & BLACK) {
-				total -= getPieceValue(board[i][j]);
-			}
-		}
-	}
-	return total;
-}
 
-int Board::getNInTrench(Team team) {
-	Piece allyTeam;
-	if (team == Black) {
-		allyTeam = BLACK;
-	}
-	else allyTeam = WHITE;
-
-	int total = 0;
-	for (int i = 0; i < board.size(); i++) {
-		if (board[i][i] & allyTeam)
-			total++;
-	}
-	return total;
-}
-
-int Board::getNInTrenchDiff() {
-	int total = 0;
-	for (int i = 0; i < board.size(); i++) {
-		if (board[i][i] & WHITE)
-			total++;
-		else if (board[i][i] & BLACK) {
-			total--;
-		}
-	}
-	return total;
-}
-
-int Board::getNTrenchEnemySideDiff(){
-    int nwhitestrench;
-    int nblackstrench;
-    int nwhitesenemy;
-    int nblacksenemy;
     for(int i = 0;i < board.size();i++){
         for(int j = 0;j < board.size();j++){
-            if(i == j){
-                if(board[i][j] & BLACK){
-                    nblackstrench++;
-                }else if(board[i][j] & WHITE){
-                    nwhitestrench++;
-                }
-            }
-            else if(i > j && board[i][j] & BLACK){
-                nblacksenemy++;
-            }else if(i < j && board[i][j] & WHITE){
-                nwhitesenemy++;
+            if(board[i][j] & BLACK){
+                totalWhite -= getPieceValue(board[i][j]);
+            }else if(board[i][j] & WHITE){
+                totalBlack -= getPieceValue(board[i][j]);
             }
         }
     }
-    return std::abs(nblackstrench - nwhitesenemy) - std::abs(nwhitestrench - nblacksenemy);
-}
-
-Team Board::getGameEnded() {
-	if (getTeamScore(Black) >= 42) {
-		return Black;
-	}
-	else if (getTeamScore(White) >= 42) {
-		return White;
-	}
-	else return None;
+    if(totalBlack > SCORE_TO_WIN){
+        return Black;
+    }else if(totalWhite > SCORE_TO_WIN){
+        return White;
+    }else return None;
 }
 
 Board Board::movePiece(Move move) {
@@ -254,9 +181,37 @@ Board Board::movePiece(Move move) {
 
 SHeur Board::calculateScore() {
 	SHeur ret = 0;
-	ret += getTeamScoreDiff();
-	ret += getNInTrenchDiff();
-	ret += getNTrenchEnemySideDiff();
+	//third and second heuristic
+	int nwhitestrench = 0;
+    int nblackstrench = 0;
+    int nwhitesenemy = 0;
+    int nblacksenemy = 0;
+    for (int i = 0; i < board.size(); i++) {
+		for (int j = 0; j < board.size(); j++) {
+            if (board[i][j] & WHITE) {
+                //Primeira heuristica (maximizar peças consumidas)
+				ret += getPieceValue(board[i][j]);
+				if(i == j){
+                    nwhitestrench++;
+				}else if(i < j){
+                    nwhitesenemy++;
+				}
+			}
+			else if (board[i][j] & BLACK) {
+			    //Primeira heuristica (maximizar peças consumidas)
+				ret -= getPieceValue(board[i][j]);
+				if(i == j){
+                    nblackstrench++;
+				}else if(i > j){
+                    nblacksenemy++;
+				}
+			}
+		}
+	}
+	//Segunda heuristica ( maximizar peças na trench)
+    ret += nwhitestrench - nblackstrench;
+    //Terceira heuristica ( tentar equivaler numero de peças inimigas na trench e aliadas no territorio inimigo)
+    ret += - std::abs(nblackstrench - nwhitesenemy) + std::abs(nwhitestrench - nblacksenemy);
 	return ret;
 }
 

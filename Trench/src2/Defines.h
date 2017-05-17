@@ -1,7 +1,7 @@
 #pragma once
 
 #define BOARD_SIZE 8
-
+#define SCORE_TO_WIN 42
 #define COLOR_BLACK			0
 #define COLOR_BLUE			1
 #define COLOR_GREEN			2
