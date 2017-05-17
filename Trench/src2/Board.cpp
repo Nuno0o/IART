@@ -15,18 +15,17 @@ Board::Board() {
 
 }
 
-std::vector<Board> Board::getAllBoards(Board original, std::vector<Move> & moves) {
+std::vector<Board> Board::getAllBoards(Board original, std::list<Move> & moves) {
 	std::vector<Board> boards;
-	for (int i = 0; i < moves.size(); i++) {
-		boards.push_back(original.movePiece(moves[i]));
+	for (auto it = moves.begin(); it != moves.end();it++) {
+		boards.push_back(original.movePiece(*it));
 	}
 	return boards;
 }
 
-std::vector<Move> & Board::getAllMoves(Team team) {
+std::list<Move> & Board::getAllMoves(Team team) {
 	//List of all moves for the team
-	std::vector<Move> * ret = new std::vector<Move>;
-	ret->reserve(80);
+	std::list<Move> * ret = new std::list<Move>;
 	//Team for bitwise cmp
 	Piece pteam;
 	switch (team)
@@ -44,8 +43,8 @@ std::vector<Move> & Board::getAllMoves(Team team) {
 	for (MCoord i = 0; i < this->board.size(); i++) {
 		for (MCoord j = 0; j < this->board.size(); j++) {
 			if (pteam & board[i][j]) {
-				std::vector<Move> moves = getPieceMoves(j, i);
-				ret->insert(ret->end(), moves.begin(), moves.end());
+				std::list<Move> moves = getPieceMoves(j, i);
+				ret->splice(ret->end(),moves);
 			}
 		}
 	}
@@ -54,9 +53,8 @@ std::vector<Move> & Board::getAllMoves(Team team) {
 
 
 
-std::vector<Move> & Board::getPieceMoves(MCoord x, MCoord y) {
-	std::vector<Move> * ret = new std::vector<Move>;
-	ret->reserve(8);
+std::list<Move> & Board::getPieceMoves(MCoord x, MCoord y) {
+	std::list<Move> * ret = new std::list<Move>;
 	//Get piece at coords
 	Piece p = board[y][x];
 	//Checks if piece is at the trench

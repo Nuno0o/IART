@@ -1,5 +1,6 @@
 #pragma once
 
+#include<list>
 #include<vector>
 
 #include "Defines.h"
@@ -36,9 +37,9 @@ private:
 
 public:
 	Board();
-	static std::vector<Board> getAllBoards(Board original, std::vector<Move> & moves);
-	std::vector<Move> & getAllMoves(Team team);
-	std::vector<Move> & getPieceMoves(MCoord x,MCoord y);
+	static std::vector<Board> getAllBoards(Board original, std::list<Move> & moves);
+	std::list<Move> & getAllMoves(Team team);
+	std::list<Move> & getPieceMoves(MCoord x,MCoord y);
 
 	Piece getPiece(MCoord x, MCoord y);
 	static int getPieceValue(Piece p);

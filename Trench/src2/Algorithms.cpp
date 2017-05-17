@@ -1,12 +1,13 @@
 #include "Algorithms.h"
 #include <stdio.h>
 #include <stdlib.h>
+
 Board Algorithms::negamaxWithoutABP(Board & b, int depth, Team team) {
 	if (depth < 1) {
 		throw "Depth must be > 1";
 	}
 	//Get all child nodes
-	std::vector<Move> moves = b.getAllMoves(team);
+	std::list<Move> moves = b.getAllMoves(team);
 	std::vector<Board> boards = b.getAllBoards(b, moves);
 	//Best choice
 	std::vector<SHeur> allHeurs;
@@ -16,7 +17,7 @@ Board Algorithms::negamaxWithoutABP(Board & b, int depth, Team team) {
 	}
 	else nextTeam = Black;
 	//Try all moves
-	for (int i = 0; i < moves.size(); i++) {
+	for (int i = 0;i < boards.size();i++) {
 		SHeur next = -negamaxWithoutABPAux(boards[i], depth - 1, nextTeam);
 		allHeurs.push_back(next);
 	}
@@ -53,9 +54,9 @@ SHeur Algorithms::negamaxWithoutABPAux(Board & b, int depth, Team team) {
 	//Best choice
 	SHeur best = -100000000000;
 	//Try all moves
-	std::vector<Move> moves = b.getAllMoves(team);
-	for (int i = 0; i < moves.size(); i++) {
-        Board b2 = b.movePiece(moves[i]);
+	std::list<Move> moves = b.getAllMoves(team);
+	for (auto it = moves.begin(); it != moves.end();it++) {
+        Board b2 = b.movePiece(*it);
 		SHeur next = -negamaxWithoutABPAux(b2,depth-1,nextTeam);
 		if (next > best) {
 			best = next;
@@ -69,7 +70,7 @@ Board Algorithms::negamaxWithABP(Board & b, int depth, Team team) {
 		throw "Depth must be > 1";
 	}
 	//Get all child nodes
-	std::vector<Move> moves = b.getAllMoves(team);
+	std::list<Move> moves = b.getAllMoves(team);
 	std::vector<Board> boards = b.getAllBoards(b, moves);
 	//Best choice
 	std::vector<SHeur> allHeurs;
@@ -79,8 +80,8 @@ Board Algorithms::negamaxWithABP(Board & b, int depth, Team team) {
 	}
 	else nextTeam = Black;
 	//Try all moves
-	for (int i = 0; i < moves.size(); i++) {
-		SHeur next = -negamaxWithABPAux(boards[i], depth - 1, nextTeam, -10000000000,10000000000);
+	for (int i = 0;i < boards.size();i++) {
+		SHeur next = -negamaxWithABPAux(boards[i], depth - 1, nextTeam,-10000000000,100000000000);
 		allHeurs.push_back(next);
 	}
 	std::vector<int> bestIndexes;
@@ -116,9 +117,9 @@ SHeur Algorithms::negamaxWithABPAux(Board & b, int depth, Team team,int alpha, i
 	//Best choice
 	SHeur best = -100000000000;
 	//Try all moves
-	std::vector<Move> moves = b.getAllMoves(team);
-	for (int i = 0; i < moves.size(); i++) {
-        Board b2 = b.movePiece(moves[i]);
+	std::list<Move> moves = b.getAllMoves(team);
+	for (auto it = moves.begin(); it != moves.end();it++) {
+        Board b2 = b.movePiece(*it);
 		SHeur next = -negamaxWithABPAux(b2, depth - 1, nextTeam,-beta,-alpha);
 		if (next > best) {
 			best = next;

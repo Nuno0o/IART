@@ -6,14 +6,14 @@ Interface::Interface() {
 	std::cout << "Welcome to trench!\n\n";
 	PlayerSettings p1;
 	PlayerSettings p2;
-	
+
 	for (int i = 1; i < 3; i++) {
 		std::cout << "What type of player is player " << i << " ?\n1-human\n2-computer(minimax)\n3-computer(minimax with pruning)\n>>";
 		int type;
 		std::cin >> type;
 		PlayerSettings player;
 		if (type == 1) {
-			player = PlayerSettings();	
+			player = PlayerSettings();
 		}
 		else if (type == 2) {
 			int depth = 1;
@@ -32,7 +32,7 @@ Interface::Interface() {
 		}
 		else p2 = player;
 	}
-	
+
 	this->game = Game(p1,p2);
 
 	this->Play();
@@ -67,12 +67,12 @@ void Interface::Play() {
 			std::cout << "Insert Y of the destiny of the piece you want to move\n>>";
 			std::cin >> dy;
 
-			std::vector<Move> moves = game.board.getAllMoves(turn);
+			std::list<Move> moves = game.board.getAllMoves(turn);
 
 			Move* validMove = NULL;
-			for (int i = 0; i < moves.size(); i++) {
-				if (moves[i].getSX() == sx && moves[i].getSY() == sy && moves[i].getDX() == dx && moves[i].getDY() == dy) {
-					validMove = &moves[i];
+			for (auto it = moves.begin(); it != moves.end();it++) {
+				if ((*it).getSX() == sx && (*it).getSY() == sy && (*it).getDX() == dx && (*it).getDY() == dy) {
+					validMove = &(*it);
 				}
 			}
 			if (validMove != NULL) {
