@@ -37,7 +37,6 @@ private:
 
 public:
 	Board();
-	static std::vector<Board> getAllBoards(Board original, std::list<Move> & moves);
 	std::list<Move> getAllMoves(Team team);
 	std::list<Move> getPieceMoves(MCoord x,MCoord y);
 

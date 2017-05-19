@@ -5,7 +5,11 @@
 class Interface {
 private:
 	Game game;
+	bool logs;
 public:
 	Interface();
 	void Play();
+
+	void clearLog();
+	void printToLog(Team team,Move mov, double time);
 };

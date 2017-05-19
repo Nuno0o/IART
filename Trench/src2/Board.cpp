@@ -16,13 +16,6 @@ Board::Board() {
 
 }
 
-std::vector<Board> Board::getAllBoards(Board original, std::list<Move> & moves) {
-	std::vector<Board> boards;
-	for (auto it = moves.begin(); it != moves.end();it++) {
-		boards.push_back(original.movePiece(*it));
-	}
-	return boards;
-}
 
 std::list<Move> Board::getAllMoves(Team team) {
 	//List of all moves for the team
