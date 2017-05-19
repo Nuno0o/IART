@@ -2,13 +2,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-Board Algorithms::negamax(Board & b, int depth, Team team,bool alphabeta) {
+Move Algorithms::negamax(Board & b, int depth, Team team,bool alphabeta) {
 	if (depth < 1) {
 		throw "Depth must be > 1";
 	}
 	//Get all child nodes
 	std::list<Move> moves = b.getAllMoves(team);
-	std::vector<Board> boards = b.getAllBoards(b, moves);
 	//Best choice
 	std::vector<SHeur> allHeurs;
     Team nextTeam;
@@ -17,13 +16,14 @@ Board Algorithms::negamax(Board & b, int depth, Team team,bool alphabeta) {
 	}
 	else nextTeam = Black;
 	//Try all moves
-	for (int i = 0;i < boards.size();i++) {
+	for (auto it = moves.begin(); it != moves.end();it++) {
         SHeur next;
+        Board test = b.movePiece(*it);
         if(alphabeta){
-            next = -negamaxWithABP(boards[i], depth - 1, nextTeam,-1000000000,1000000000);
+            next = -negamaxWithABP(test, depth - 1, nextTeam,-1000000000,1000000000);
         }
 		else
-            next = -negamaxWithoutABP(boards[i], depth - 1, nextTeam);
+            next = -negamaxWithoutABP(test, depth - 1, nextTeam);
 		allHeurs.push_back(next);
 	}
 	std::vector<int> bestIndexes;
@@ -38,7 +38,13 @@ Board Algorithms::negamax(Board & b, int depth, Team team,bool alphabeta) {
 			bestIndexes.push_back(i);
 		}
 	}
-	return boards[bestIndexes[rand() % bestIndexes.size()]];
+	auto it2 = moves.begin();
+	int which = bestIndexes[rand() % bestIndexes.size()];
+	while(which != 0){
+        it2++;
+        which--;
+	}
+	return *it2;
 }
 
 SHeur Algorithms::negamaxWithoutABP(Board & b, int depth, Team team) {

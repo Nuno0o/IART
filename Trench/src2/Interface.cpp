@@ -87,15 +87,17 @@ void Interface::Play() {
 		}
 		else if (p.type == MinMax) {
             auto t_start = std::chrono::high_resolution_clock::now();
-			game.board = Algorithms::negamax(game.board, p.depth, turn, false);
+			Move thismove = Algorithms::negamax(game.board, p.depth, turn, false);
             auto t_end = std::chrono::high_resolution_clock::now();
             std::cout << "Time taken: " << std::chrono::duration<double, std::milli>(t_end-t_start).count() << "ms\n";
+            game.board = game.board.movePiece(thismove);
 		}
 		else if (p.type == MinMaxAB) {
             auto t_start = std::chrono::high_resolution_clock::now();
-			game.board = Algorithms::negamax(game.board, p.depth, turn,true);
+			Move thismove = Algorithms::negamax(game.board, p.depth, turn,true);
             auto t_end = std::chrono::high_resolution_clock::now();
             std::cout << "Time taken: " << std::chrono::duration<double, std::milli>(t_end-t_start).count() << "ms\n";
+            game.board = game.board.movePiece(thismove);
 		}
 		if (turn == White) {
 			turn = Black;

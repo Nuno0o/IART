@@ -5,7 +5,7 @@
 class Algorithms {
 public:
     //Negamax
-	static Board negamax(Board & b, int depth, Team team,bool alphabeta);
+	static Move negamax(Board & b, int depth, Team team,bool alphabeta);
 	//Negamax without alpha beta pruning
 	static SHeur negamaxWithoutABP(Board & b, int depth, Team team);
 	//Negamax with alpha beta pruning
