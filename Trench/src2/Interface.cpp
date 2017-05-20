@@ -211,7 +211,7 @@ void Interface::printEndGame(Team winner, int nturns, double averagew, double av
     }else s += "Black ";
     s+= "won in " + std::to_string(nturns) + " turns\n";
     s+= "White time average : " + std::to_string(averagew) + "ms\n";
-    s+= "White time average : " + std::to_string(averageb) + "ms\n";
+    s+= "Black time average : " + std::to_string(averageb) + "ms\n";
     std::ofstream ofs;
     ofs.open("logs.txt", std::ofstream::out | std::ofstream::app);
     ofs << s;
