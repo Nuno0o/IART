@@ -144,9 +144,9 @@ Team Board::getGameEnded() {
             }
         }
     }
-    if(totalBlack > SCORE_TO_WIN){
+    if(totalBlack >= SCORE_TO_WIN){
         return Black;
-    }else if(totalWhite > SCORE_TO_WIN){
+    }else if(totalWhite >= SCORE_TO_WIN){
         return White;
     }else return None;
 }
@@ -221,7 +221,8 @@ SHeur Board::calculateScore() {
 	//Segunda heuristica ( maximizar peças na trench)
     ret += nwhitestrench - nblackstrench;
     //Terceira heuristica ( tentar equivaler numero de peças inimigas na trench e aliadas no territorio inimigo)
-    ret += - std::abs(nblackstrench - nwhitesenemy) + std::abs(nwhitestrench - nblacksenemy);
+    ret += (nwhitesenemy >= nblackstrench
+            )*nblackstrench - (nblacksenemy >= nwhitestrench)*nwhitestrench;
 	return ret;
 }
 
