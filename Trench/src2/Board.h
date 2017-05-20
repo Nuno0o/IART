@@ -47,6 +47,8 @@ public:
 	Piece getPiece(MCoord x, MCoord y);
 	//Get value of a piece
 	static int getPieceValue(Piece p);
+	//Get team score
+	int getTeamScore(Team t);
     //Returns Black if black team won, White if white team won and None if the game hasn't ended
 	Team getGameEnded();
 

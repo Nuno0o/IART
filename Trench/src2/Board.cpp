@@ -172,6 +172,23 @@ Board Board::movePiece(Move move) {
 	return b;
 }
 
+int Board::getTeamScore(Team t){
+    int max = 72;
+    Piece comp;
+    if(t == White){
+        comp = BLACK;
+    }else comp = WHITE;
+
+    for(int i = 0;i < board.size();i++){
+        for(int j = 0;j < board.size();j++){
+            if(board[i][j] & comp){
+                max -= this->getPieceValue(board[i][j]);
+            }
+        }
+    }
+    return max;
+}
+
 SHeur Board::calculateScore() {
 	SHeur ret = 0;
 	//third and second heuristic

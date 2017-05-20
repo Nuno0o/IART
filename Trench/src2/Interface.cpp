@@ -94,6 +94,7 @@ void Interface::Play() {
 			std::cout << "Black turn " << currTurn << "\n";
 			p = game.player2;
 		}
+		std::cout << "White - " << game.board.getTeamScore(White) << " | Black - " << game.board.getTeamScore(Black) << "\n";
 		//If the player is human
 		if (p.type == Human) {
 			int sx, sy, dx, dy;
@@ -143,8 +144,10 @@ void Interface::Play() {
                     whiteTimes.push_back(std::chrono::duration<double, std::milli>(t_end-t_start).count());
                 }else blackTimes.push_back(std::chrono::duration<double, std::milli>(t_end-t_start).count());
             }
-            if(this->stop)
+            if(this->stop){
+                std::cout << "Press any key to continue...\n";
                 std::cin.get();
+            }
 		}
 		else if (p.type == MinMaxAB) {
             auto t_start = std::chrono::high_resolution_clock::now();
@@ -158,8 +161,10 @@ void Interface::Play() {
                     whiteTimes.push_back(std::chrono::duration<double, std::milli>(t_end-t_start).count());
                 }else blackTimes.push_back(std::chrono::duration<double, std::milli>(t_end-t_start).count());
             }
-            if(this->stop)
+            if(this->stop){
+                std::cout << "Press any key to continue...\n";
                 std::cin.get();
+            }
 		}
         std::cout << "\n\n";
 		if (turn == White) {
