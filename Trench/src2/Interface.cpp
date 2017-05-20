@@ -95,14 +95,17 @@ void Interface::Play() {
 			sx = getInt();
 			std::cout << "Insert Y of the piece you want to move\n";
 			sy = getInt();
+
+			Move* validMove = NULL;
+			std::list<Move> moves = game.board.getAllMoves(turn);
+            printBoardWithMoves(game.board, moves, sx, sy);
+
 			std::cout << "Insert X of the destiny of the piece you want to move\n";
 			dx = getInt();
 			std::cout << "Insert Y of the destiny of the piece you want to move\n";
 			dy = getInt();
 
-			std::list<Move> moves = game.board.getAllMoves(turn);
 
-			Move* validMove = NULL;
 			for (auto it = moves.begin(); it != moves.end();it++) {
 				if ((*it).getSX() == sx && (*it).getSY() == sy && (*it).getDX() == dx && (*it).getDY() == dy) {
 					validMove = &(*it);
