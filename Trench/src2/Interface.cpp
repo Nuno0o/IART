@@ -51,12 +51,18 @@ Interface::Interface() {
 		}
 		else p2 = player;
 	}
-	std::cout << "Save logs to file?\n";
+	std::cout << "Save logs to file(y-1/n-0)?\n";
 
 	bool logs = getInt();
 
+	std::cout << "Press enter key to move to next turn on bot(y-1/n-0)?\n";
+
+	bool stop = getInt();
+
 	this->game = Game(p1,p2);
 	this->logs = logs;
+	this->stop = stop;
+
     if(logs){
         clearLog();
     }
@@ -137,6 +143,8 @@ void Interface::Play() {
                     whiteTimes.push_back(std::chrono::duration<double, std::milli>(t_end-t_start).count());
                 }else blackTimes.push_back(std::chrono::duration<double, std::milli>(t_end-t_start).count());
             }
+            if(this->stop)
+                std::cin.get();
 		}
 		else if (p.type == MinMaxAB) {
             auto t_start = std::chrono::high_resolution_clock::now();
@@ -150,6 +158,8 @@ void Interface::Play() {
                     whiteTimes.push_back(std::chrono::duration<double, std::milli>(t_end-t_start).count());
                 }else blackTimes.push_back(std::chrono::duration<double, std::milli>(t_end-t_start).count());
             }
+            if(this->stop)
+                std::cin.get();
 		}
 
 		if (turn == White) {

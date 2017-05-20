@@ -11,6 +11,8 @@ private:
 	Game game;
 	//Indicates if logs shall be output to logs.txt
 	bool logs;
+	//Indicates if a key should be pressed to see what the bot does
+	bool stop;
 	//Play(automatically called by constructor)
 	void Play();
 	//Clear log file and create if doesnt exist
