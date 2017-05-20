@@ -174,6 +174,10 @@ void Interface::Play() {
 		won = game.board.getGameEnded();
 		currTurn++;
 	}
+	printBoard(game.board);
+	std::cout << "Turn " << currTurn << "\n";
+    std::cout << "White - " << game.board.getTeamScore(White) << " | Black - " << game.board.getTeamScore(Black) << "\n";
+
 	if (won == Black) {
 		std::cout << "\nBlack won\n";
 	}
