@@ -221,8 +221,7 @@ SHeur Board::calculateScore() {
 	//Segunda heuristica ( maximizar peças na trench)
     ret += nwhitestrench - nblackstrench;
     //Terceira heuristica ( tentar equivaler numero de peças inimigas na trench e aliadas no territorio inimigo)
-    ret += (nwhitesenemy >= nblackstrench
-            )*nblackstrench - (nblacksenemy >= nwhitestrench)*nwhitestrench;
+    ret += (nwhitesenemy >= nblackstrench)*nblackstrench - (nblacksenemy >= nwhitestrench)*nwhitestrench;
 	return ret;
 }
 
