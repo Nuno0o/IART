@@ -12,4 +12,5 @@ public:
 
 	void clearLog();
 	void printToLog(Team team,Move mov, double time);
+	void printEndGame(Team winner, int nturns, double averagew, double averageb);
 };

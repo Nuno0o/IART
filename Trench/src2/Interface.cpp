@@ -7,6 +7,9 @@
 #include <unistd.h>
 #include <fstream>
 #include <string>
+#include <vector>
+#include <numeric>
+#include <functional>
 //Read int from std::cin
 int getInt(){
     int x;
@@ -61,20 +64,28 @@ Interface::Interface() {
 }
 
 void Interface::Play() {
+    //Print game is starting
 	std::cout << "\nGame is starting...\n";
 	Team turn = White;
 	Team won = None;
+
+	//Log times
+	std::vector<double> whiteTimes;
+	std::vector<double> blackTimes;
+
+	int currTurn = 1;
+
 	while (won == None) {
 		//Retrieve player settings for player
 		PlayerSettings p;
 
 		printBoard(game.board);
 		if (turn == White) {
-			std::cout << "\nWhite turn\n";
+			std::cout << "\nWhite turn " << currTurn << "\n";
 			p = game.player1;
 		}
 		else {
-			std::cout << "\nBlack turn\n";
+			std::cout << "\nBlack turn " << currTurn << "\n";
 			p = game.player2;
 		}
 		//If the player is human
@@ -106,6 +117,9 @@ void Interface::Play() {
 			}
 			if(this->logs){
                 printToLog(turn,*validMove,0);
+                if(turn == White){
+                    whiteTimes.push_back(0);
+                }else blackTimes.push_back(0);
             }
 		}
 		else if (p.type == MinMax) {
@@ -116,6 +130,9 @@ void Interface::Play() {
             game.board = game.board.movePiece(thismove);
             if(this->logs){
                 printToLog(turn,thismove,std::chrono::duration<double, std::milli>(t_end-t_start).count());
+                if(turn == White){
+                    whiteTimes.push_back(std::chrono::duration<double, std::milli>(t_end-t_start).count());
+                }else blackTimes.push_back(std::chrono::duration<double, std::milli>(t_end-t_start).count());
             }
 		}
 		else if (p.type == MinMaxAB) {
@@ -126,6 +143,9 @@ void Interface::Play() {
             game.board = game.board.movePiece(thismove);
             if(this->logs){
                 printToLog(turn,thismove,std::chrono::duration<double, std::milli>(t_end-t_start).count());
+                if(turn == White){
+                    whiteTimes.push_back(std::chrono::duration<double, std::milli>(t_end-t_start).count());
+                }else blackTimes.push_back(std::chrono::duration<double, std::milli>(t_end-t_start).count());
             }
 		}
 
@@ -134,12 +154,16 @@ void Interface::Play() {
 		}
 		else turn = White;
 		won = game.board.getGameEnded();
+		currTurn++;
 	}
 	if (won == Black) {
 		std::cout << "\nBlack won\n";
 	}
 	else if (won == White) {
 		std::cout << "\nWhite won\n";
+	}
+	if(this->logs){
+        printEndGame(won,currTurn,std::accumulate(whiteTimes.begin(),whiteTimes.end(),0.0) / whiteTimes.size(), std::accumulate(blackTimes.begin(),blackTimes.end(),0.0) / blackTimes.size());
 	}
 }
 void Interface::clearLog(){
@@ -174,6 +198,20 @@ void Interface::printToLog(Team team,Move mov,double time){
     s += "\n   ";
     s += "(" + std::to_string(mov.getSX()) + "," + std::to_string(mov.getSY()) + ") to (" + std::to_string(mov.getDX()) + "," + std::to_string(mov.getDY()) + ") in " + std::to_string(time) + "ms\n";
 
+    std::ofstream ofs;
+    ofs.open("logs.txt", std::ofstream::out | std::ofstream::app);
+    ofs << s;
+    ofs.close();
+}
+
+void Interface::printEndGame(Team winner, int nturns, double averagew, double averageb){
+    std::string s = "";
+    if(winner == White){
+        s += "White ";
+    }else s += "Black ";
+    s+= "won in " + std::to_string(nturns) + " turns\n";
+    s+= "White time average : " + std::to_string(averagew) + "ms\n";
+    s+= "White time average : " + std::to_string(averageb) + "ms\n";
     std::ofstream ofs;
     ofs.open("logs.txt", std::ofstream::out | std::ofstream::app);
     ofs << s;
