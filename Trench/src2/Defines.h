@@ -32,7 +32,7 @@ typedef int SHeur;
 enum Team : char {
 	White = 1, Black = -1, None = 0
 };
-//Player
+//Player type
 enum PlayerType : char {
 	Human,MinMax,MinMaxAB
 };

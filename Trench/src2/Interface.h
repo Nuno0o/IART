@@ -3,14 +3,20 @@
 #include "Game.h"
 
 class Interface {
-private:
-	Game game;
-	bool logs;
 public:
+    //Build interface
 	Interface();
+private:
+    //Game
+	Game game;
+	//Indicates if logs shall be output to logs.txt
+	bool logs;
+	//Play(automatically called by constructor)
 	void Play();
-
+	//Clear log file and create if doesnt exist
 	void clearLog();
+	//Print a turn to log file
 	void printToLog(Team team,Move mov, double time);
+	//Print end game stats to log
 	void printEndGame(Team winner, int nturns, double averagew, double averageb);
 };

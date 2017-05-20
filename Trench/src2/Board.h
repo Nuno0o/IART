@@ -33,16 +33,21 @@ public:
 
 class Board {
 private:
+    //Main board
 	std::vector<std::vector<Piece> > board;
 
 public:
+    //Board constructor, builds board with default positions
 	Board();
+	//Get all possible moves of a team
 	std::list<Move> getAllMoves(Team team);
+	//Get all possible moves of a piece
 	std::list<Move> getPieceMoves(MCoord x,MCoord y);
-
+    //Get a piece
 	Piece getPiece(MCoord x, MCoord y);
+	//Get value of a piece
 	static int getPieceValue(Piece p);
-
+    //Returns Black if black team won, White if white team won and None if the game hasn't ended
 	Team getGameEnded();
 
     //Moves a piece, returning a new board
