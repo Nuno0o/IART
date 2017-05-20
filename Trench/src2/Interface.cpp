@@ -87,11 +87,11 @@ void Interface::Play() {
 
 		printBoard(game.board);
 		if (turn == White) {
-			std::cout << "\nWhite turn " << currTurn << "\n";
+			std::cout << "White turn " << currTurn << "\n";
 			p = game.player1;
 		}
 		else {
-			std::cout << "\nBlack turn " << currTurn << "\n";
+			std::cout << "Black turn " << currTurn << "\n";
 			p = game.player2;
 		}
 		//If the player is human
@@ -161,7 +161,7 @@ void Interface::Play() {
             if(this->stop)
                 std::cin.get();
 		}
-
+        std::cout << "\n\n";
 		if (turn == White) {
 			turn = Black;
 		}
